@@ -11,7 +11,6 @@ import CoreData
 class CategoryViewController: UITableViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     var categoriesArray = [Category]()
     
     override func viewDidLoad() {
@@ -20,6 +19,7 @@ class CategoryViewController: UITableViewController {
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
         var textField = UITextField()
         let alert = UIAlertController(title: "Add new Category", message: "", preferredStyle: .alert)
         
@@ -28,7 +28,7 @@ class CategoryViewController: UITableViewController {
             textField = alertTextField
         }
         
-        let action = UIAlertAction(title: "Add Category", style: .default) { action in
+        let action = UIAlertAction(title: "Add", style: .default) { action in
             let newCategory = Category(context: self.context)
             newCategory.name = textField.text ?? "New Category"
             self.categoriesArray.append(newCategory)
@@ -46,6 +46,7 @@ class CategoryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         let category = categoriesArray[indexPath.row]
         cell.textLabel?.text = category.name
@@ -53,9 +54,8 @@ class CategoryViewController: UITableViewController {
         return cell
     }
     
-    
-    
     // MARK: TableView Delegate Method
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: self)
         //            categoriesArray[indexPath.row].done = !categoriesArray[indexPath.row].done
@@ -71,6 +71,7 @@ class CategoryViewController: UITableViewController {
             destinationVC.selectedCategory = categoriesArray[indexPath.row]
         }
     }
+    
     // MARK: Data Manipulation Method
     
     func saveCategories() {

@@ -9,7 +9,6 @@ import UIKit
 import RealmSwift
 
 class CategoryViewController: UITableViewController {
-    
     let realm = try! Realm()
     var categories: Results<Category>?
     
@@ -19,7 +18,6 @@ class CategoryViewController: UITableViewController {
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
-        
         var textField = UITextField()
         let alert = UIAlertController(title: "Add new Category", message: "", preferredStyle: .alert)
         
@@ -45,10 +43,8 @@ class CategoryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added yet"
-        
         return cell
     }
     
@@ -79,7 +75,6 @@ class CategoryViewController: UITableViewController {
     }
     
     func loadCategoties() {
-        
         categories = realm.objects(Category.self)
         tableView.reloadData()
     }

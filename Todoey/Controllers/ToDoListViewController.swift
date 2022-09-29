@@ -87,9 +87,7 @@ class ToDoListViewController: UITableViewController {
         tableView.reloadData()
     }
 }
-
  //MARK: - Search Bar methods
-
 extension ToDoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         toDoItems = toDoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)

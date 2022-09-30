@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/zlataguseva/1. GIT/Todoe/Todoey/Controllers/SwipeTableViewController.swift">
+   </FileRef>
+   <FileRef
       location = "group:Todoey.xcodeproj">
    </FileRef>
    <FileRef

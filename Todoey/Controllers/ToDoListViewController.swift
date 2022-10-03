@@ -19,6 +19,7 @@ class ToDoListViewController: SwipeTableViewController {
             loadItems()
         }
     }
+    var baseAlpha: CGFloat = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,9 @@ class ToDoListViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let item = toDoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
+            let devision = Double(indexPath.row) / Double(toDoItems?.count ?? 1)
+            baseAlpha -= CGFloat(devision)
+            cell.backgroundColor = UIColor(hexString: item.color, alpha: baseAlpha)
             cell.accessoryType = item.done ? .checkmark : .none
         } else {
             cell.textLabel?.text = "No Items Added"
@@ -69,12 +73,15 @@ class ToDoListViewController: SwipeTableViewController {
                         let newItem = Item()
                         newItem.title = textField.text ?? "New item"
                         newItem.dateCreated = Date()
+                        newItem.color = self.selectedCategory?.color ?? "000000"
+                        print(self.selectedCategory?.name ?? "error")
                         currentCategory.items.append(newItem)
                     }
                 } catch {
                     print("Error saving new items, \(error)")
                 }
             }
+            self.baseAlpha = 1
             self.tableView.reloadData()
         }
         alert.addAction(action)

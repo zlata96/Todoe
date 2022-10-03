@@ -16,6 +16,7 @@ class CategoryViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategoties()
+        tableView.separatorStyle = .none
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -30,6 +31,7 @@ class CategoryViewController: SwipeTableViewController {
         let action = UIAlertAction(title: "Add", style: .default) { action in
             let newCategory = Category()
             newCategory.name = textField.text ?? "New Category"
+            newCategory.color = self.getRandomColor().toHexString()
             self.save(category: newCategory)
         }
         
@@ -42,10 +44,12 @@ class CategoryViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories?.count ?? 1
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added yet"
+//        let color = UIColor(hexString: categories?[indexPath.row].color ?? "000000")
+        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].color ?? "000000")
         return cell
     }
     
@@ -91,5 +95,38 @@ class CategoryViewController: SwipeTableViewController {
             }
         }
     }
+    
+    func getRandomColor() -> UIColor {
+        return UIColor(
+            red: CGFloat.random(in: 0...1),
+            green: CGFloat.random(in: 0...1),
+            blue: CGFloat.random(in: 0...1),
+            alpha: 1.0)
+    }
 }
+
+extension UIColor {
+    func toHexString() -> String {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        
+        return NSString(format:"#%06x", rgb) as String
+    }
+    
+    convenience init(hexString: String, alpha: CGFloat = 1) {
+        let chars = Array(hexString.dropFirst())
+        self.init(red:   .init(strtoul(String(chars[0...1]),nil,16))/255,
+                  green: .init(strtoul(String(chars[2...3]),nil,16))/255,
+                  blue:  .init(strtoul(String(chars[4...5]),nil,16))/255,
+                  alpha: alpha)
+    }
+}
+
+
 

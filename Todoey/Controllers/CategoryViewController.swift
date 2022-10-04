@@ -12,11 +12,25 @@ import SwipeCellKit
 class CategoryViewController: SwipeTableViewController {
     let realm = try! Realm()
     var categories: Results<Category>?
+    var constant = Constants()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategoties()
         tableView.separatorStyle = .none
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller doesn't exist")
+        }
+        let mainColor = UIColor.init(hexString: constant.mainColor)
+        navBar.backgroundColor = mainColor
+        navBar.barTintColor = mainColor
+        let app = UINavigationBarAppearance()
+        app.backgroundColor = mainColor
+        self.navigationController?.navigationBar.scrollEdgeAppearance = app
+        self.navigationController?.navigationBar.standardAppearance = app
+        tableView.reloadData()
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -48,8 +62,7 @@ class CategoryViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added yet"
-//        let color = UIColor(hexString: categories?[indexPath.row].color ?? "000000")
-        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].color ?? "000000")
+        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].color ?? constant.mainColor)
         return cell
     }
     

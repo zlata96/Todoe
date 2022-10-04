@@ -10,7 +10,7 @@ import RealmSwift
 
 class Item: Object {
     @objc dynamic var title = ""
-    @objc dynamic var done = false
+    @objc dynamic var isDone = false
     @objc dynamic var color = ""
     @objc dynamic var dateCreated: Date?
     var parentCategory = LinkingObjects(fromType: Category.self, property: "items")

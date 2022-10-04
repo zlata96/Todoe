@@ -19,10 +19,26 @@ class ToDoListViewController: SwipeTableViewController {
             loadItems()
         }
     }
+    var constant = Constants()
     var baseAlpha: CGFloat = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.separatorStyle = .none
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        title = selectedCategory?.name ?? "Item"
+        guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller doesn't exist")
+        }
+        let categoryColor = UIColor(hexString: selectedCategory?.color ?? constant.mainColor)
+        searchBar.barTintColor = categoryColor
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        navBar.tintColor = UIColor.white
+        let app = UINavigationBarAppearance()
+        app.backgroundColor = categoryColor
+        self.navigationController?.navigationBar.scrollEdgeAppearance = app
+        self.navigationController?.navigationBar.standardAppearance = app
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -33,10 +49,9 @@ class ToDoListViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let item = toDoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
-            let devision = Double(indexPath.row) / Double(toDoItems?.count ?? 1)
-            baseAlpha -= CGFloat(devision)
+            baseAlpha -= CGFloat(1) / CGFloat(toDoItems?.count ?? 1)
             cell.backgroundColor = UIColor(hexString: item.color, alpha: baseAlpha)
-            cell.accessoryType = item.done ? .checkmark : .none
+            cell.accessoryType = item.isDone ? .checkmark : .none
         } else {
             cell.textLabel?.text = "No Items Added"
         }
@@ -47,13 +62,13 @@ class ToDoListViewController: SwipeTableViewController {
         if let item = toDoItems?[indexPath.row] {
             do {
                 try realm.write {
-                item.done = !item.done
+                    item.isDone = !item.isDone
                 }
             } catch {
                 print("Error saving done status, \(error)")
             }
         }
-        tableView.reloadData()
+        reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -73,7 +88,7 @@ class ToDoListViewController: SwipeTableViewController {
                         let newItem = Item()
                         newItem.title = textField.text ?? "New item"
                         newItem.dateCreated = Date()
-                        newItem.color = self.selectedCategory?.color ?? "000000"
+                        newItem.color = self.selectedCategory?.color ?? self.constant.mainColor
                         print(self.selectedCategory?.name ?? "error")
                         currentCategory.items.append(newItem)
                     }
@@ -81,8 +96,7 @@ class ToDoListViewController: SwipeTableViewController {
                     print("Error saving new items, \(error)")
                 }
             }
-            self.baseAlpha = 1
-            self.tableView.reloadData()
+            self.reloadData()
         }
         alert.addAction(action)
         present(alert, animated: true)
@@ -104,15 +118,20 @@ class ToDoListViewController: SwipeTableViewController {
             }
         }
     }
+    
+    func reloadData() {
+        tableView.reloadData()
+        baseAlpha = 1
+    }
 }
 
- //MARK: - Search Bar methods
+//MARK: - Search Bar methods
 extension ToDoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         toDoItems = toDoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
         tableView.reloadData()
     }
-
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
             loadItems()

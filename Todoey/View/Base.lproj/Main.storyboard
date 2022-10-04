@@ -100,12 +100,10 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CZ8-Ky-ZH3" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" alpha="0.75" contentMode="scaleToFill" id="t5W-cw-wy3">
-                        <rect key="frame" x="0.0" y="47" width="390" height="44"/>
+                    <navigationBar key="navigationBar" alpha="0.75" contentMode="scaleToFill" largeTitles="YES" id="t5W-cw-wy3">
+                        <rect key="frame" x="0.0" y="47" width="390" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.49803921569999998" green="0.74117647060000003" blue="0.79215686269999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="tintColor" red="0.5" green="0.74070805569999998" blue="0.79139036230000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="0.5" green="0.74070805569999998" blue="0.79139036230000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
@@ -117,7 +115,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3n-EX-ppZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="94" y="-2"/>
+            <point key="canvasLocation" x="-11" y="-2"/>
         </scene>
     </scenes>
     <resources>
